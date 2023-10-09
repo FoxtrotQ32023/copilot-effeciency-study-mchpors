@@ -41,3 +41,4 @@ location2 = set_coords[0]
 import geopy.distance
 dist = geopy.distance.geodesic(location1, location2).km
 print("dist = ", dist)
+
