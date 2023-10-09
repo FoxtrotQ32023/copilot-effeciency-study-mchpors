@@ -36,3 +36,7 @@ Your output should always contain two digits after the decimal point.
 3.20 -15.00
 52.31 4.76
 ```
+
+## **What I understand**
+
+In the input file we receive a number of airports in a set and the correspoding latitudes and longitudes for each airport. The aim is to find the minimum maximum distance from one of these airports to the other airports in the set, in order to decide which airport would best as a hub. The output file should display the latitude and longitude for each set in the input file. If more than one airport serves as the best the last in the input set should be returned.
