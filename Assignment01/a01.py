@@ -12,7 +12,7 @@ count = 0
 sets = []
 while count < number_lines:
     n1 = int(lines[0])
-    print(n1)
+    print(n1) 
     all_coordinates_str = lines[1:n1+1]
     latitudes = []
     longitudes = []
