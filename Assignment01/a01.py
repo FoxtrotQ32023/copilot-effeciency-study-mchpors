@@ -1,6 +1,6 @@
 import geopy.distance
 import numpy as np
-
+import math
 
 def read_data(filepath):
     file = open(filepath, 'r')
@@ -30,24 +30,50 @@ def read_data(filepath):
 
     return sets
 
-sets = read_data('Assignment01/airlinehub2.in')
-print("sets: ", sets)
 
-set_ = sets[0]
-set_coords = set_[1]
 
-dist_matrix = np.zeros((len(set_coords),len(set_coords)))
+def make_dist_matrix(set_coords):
+    dist_matrix = np.zeros((len(set_coords),len(set_coords)))
 
-for i in range(0,len(set_coords)):
-    print("i:",i)
-    location1 = set_coords[i]
-    for j in range(0,len(set_coords)):
-        location2 = set_coords[j]
-        print("i =",i,"j =",j,":")
-        print("location1:", location1, " - location2:", location2)
-        dist = geopy.distance.geodesic(location1, location2).km
-        dist_matrix[i][j] = dist
+    for i in range(0,len(set_coords)):
+        #print("i:",i)
+        location1 = set_coords[i]
+        for j in range(0,len(set_coords)):
+            location2 = set_coords[j]
+            #print("i =",i,"j =",j,":")
+            #print("location1:", location1, " - location2:", location2)
+            
+            #dist = geopy.distance.geodesic(location1, location2).km
+            dist = math.dist(location1,location2)
 
-print("dist_matrix = \n", dist_matrix)
-print("Sum of each column:")
-print(np.sum(dist_matrix, axis=0))
+            dist_matrix[i][j] = dist
+    return dist_matrix
+
+def find_min_max_dist_location(dist_matrix):
+    #print("dist_matrix = \n", dist_matrix)
+    #print("Sum of each column:")
+    accumulated_dist_list = np.sum(dist_matrix, axis=0)
+
+    min_max_dist = 9999999999999999
+    for i in range(0,len(accumulated_dist_list)):
+        #print(i)
+        if min_max_dist >= accumulated_dist_list[i]:
+            min_max_dist = accumulated_dist_list[i]
+            min_max_dist_location = set_coords[i]
+    return min_max_dist_location
+
+
+sets = read_data('Assignment01/airlinehub.in')
+#print("sets: ", sets)
+min_max_dist_locations = []
+for set_ in sets:
+    set_coords = set_[1]
+    dist_matrix = make_dist_matrix(set_coords)
+    min_max_dist_location = find_min_max_dist_location(dist_matrix)
+    min_max_dist_locations.append(min_max_dist_location)
+
+with open('Assignment01/my_airlinehub.ans', 'w') as f:
+    for l in min_max_dist_locations:
+        line = "{:.2f} {:.2f}".format(l[0],l[1])
+        f.write(line)
+        f.write('\n')
