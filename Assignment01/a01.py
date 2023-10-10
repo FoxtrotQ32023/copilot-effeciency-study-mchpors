@@ -1,4 +1,5 @@
 import geopy.distance
+import numpy as np
 
 
 def read_data(filepath):
@@ -32,17 +33,21 @@ def read_data(filepath):
 sets = read_data('Assignment01/airlinehub2.in')
 print("sets: ", sets)
 
-set_ = sets[2]
+set_ = sets[1]
 set_coords = set_[1]
+
+dist_matrix = np.zeros((len(set_coords),len(set_coords)))
+
 for i in range(0,len(set_coords)):
     print("i:",i)
     location1 = set_coords[i]
     for j in range(0,len(set_coords)):
-        if i+1 == len(set_coords):
-            location2 = set_coords[0]
-        else:
-            location2 = set_coords[i+1]
-        print("location1:", location1, " - location2: ", location2)
+        location2 = set_coords[j]
+        print("i =",i,"j =",j,":")
+        print("location1:", location1, " - location2:", location2)
         dist = geopy.distance.geodesic(location1, location2).km
-        print("dist = ", dist)
+        dist_matrix[i][j] = dist
 
+print("dist_matrix = \n", dist_matrix)
+print("Sum of each column:")
+print(np.sum(dist_matrix, axis=0))
