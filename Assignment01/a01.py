@@ -33,7 +33,7 @@ def read_data(filepath):
 sets = read_data('Assignment01/airlinehub2.in')
 print("sets: ", sets)
 
-set_ = sets[1]
+set_ = sets[0]
 set_coords = set_[1]
 
 dist_matrix = np.zeros((len(set_coords),len(set_coords)))
