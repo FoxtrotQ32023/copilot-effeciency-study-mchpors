@@ -19,16 +19,46 @@ file = open("Assignment02/stringmultimatching.in", "r")
 read_file = file.readlines()
 strip_file = [x.strip() for x in read_file]
 print("strip_file: ", strip_file)
-n = int(strip_file[0]) # number of search terms
-print("n: ", n)
-search_terms = strip_file[1:n+1]
-print("search_terms: ", search_terms)
-text = strip_file[n+1]  # text to search in
-print("text: ", text)
 
-# create a list with the index positions of each of the search terms found in the text:
+line_number = 0
+ns = []
+all_search_terms = []
+texts = []
+while line_number < len(strip_file):
+    #print("line_number: ", line_number)
+    n = int(strip_file[line_number]) # number of search terms
+    ns.append(n)
+    #print("n: ", n)
+    search_terms = strip_file[line_number+1:line_number+1+n]
+    all_search_terms.append(search_terms)
+    #print("search_terms: ", search_terms)
+    text = strip_file[line_number+n+1]  # text to search in
+    texts.append(text)
+    #print("text: ", text)
+    line_number += n + 2
 
+full_list_of_dicts = []
+for j in range(len(texts)):
+    print("j: ", j)
+    text = texts[j]
+    # create a list that contains the index positions of the search terms in the input text
+    list_of_dicts = []
+    for search_term in all_search_terms[j]:
+        #print("search_term: ", search_term)
+        index_positions = []
+        for i in range(len(text)):
+            if text[i:i+len(search_term)] == search_term:
+                index_positions.append(i)
+        list_of_dicts.append({search_term: index_positions})
+        #print(" ".join(str(x) for x in index_positions))
+    full_list_of_dicts.append(list_of_dicts)
+    #print("list_of_dicts: ", list_of_dicts)
 
+print("full_list_of_dicts: ", full_list_of_dicts)
 
-
-
+with open('Assignment02/my_stringmultimatching.ans', 'w') as f:
+    for i in range(len(full_list_of_dicts)):
+        for j in full_list_of_dicts[i]:
+            for key, value in j.items():
+                f.write(" ".join(str(x) for x in value))
+                f.write('\n')
